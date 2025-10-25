@@ -27,6 +27,7 @@ class Command:
         shell_execution: Whether command uses shell execution
         tags: Optional list of tags for categorization
         metadata: Raw metadata dictionary
+        modified_at: File modification timestamp
     """
 
     name: str
@@ -39,6 +40,7 @@ class Command:
     shell_execution: bool = False
     tags: Optional[List[str]] = None
     metadata: Optional[Dict[str, Any]] = None
+    modified_at: Optional[float] = None
 
 
 class CommandParser:
@@ -112,6 +114,9 @@ class CommandParser:
         # Detect namespace
         namespace = self._detect_namespace(file_path, repo_path)
 
+        # Get file modification timestamp
+        modified_at = file_path.stat().st_mtime
+
         # Build Command object
         command = Command(
             name=metadata.get("name", ""),
@@ -124,6 +129,7 @@ class CommandParser:
             shell_execution=metadata.get("shell_execution", False),
             tags=metadata.get("tags"),
             metadata=metadata,
+            modified_at=modified_at,
         )
 
         return command
