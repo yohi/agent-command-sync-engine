@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-command-sync-engine"
+version = "0.1.0"
+description = "Unified command management across multiple AI agent CLIs"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "Agent Command Sync Engine Team"}
+]
+dependencies = [
+    "typer>=0.12.0",
+    "PyYAML==6.0.1",
+    "click>=8.1.0",
+    "rich>=10.11.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-cov==4.1.0",
+    "mypy==1.7.1",
+]
+
+[project.scripts]
+sync-engine = "sync_engine.cli:app"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --cov=src/sync_engine --cov-report=term-missing"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+mypy_path = "src"
+
+[tool.coverage.run]
+source = ["src/sync_engine"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
